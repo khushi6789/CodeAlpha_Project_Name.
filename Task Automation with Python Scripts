@@ -1,0 +1,55 @@
+import os
+import shutil
+
+def organize_files(directory):
+    for filename in os.listdir(directory):
+        if os.path.isfile(os.path.join(directory, filename)):
+            file_extension = filename.split('.')[-1]
+            destination_folder = os.path.join(directory, file_extension)
+
+            if not os.path.exists(destination_folder):
+                os.makedirs(destination_folder)
+
+            shutil.move(os.path.join(directory, filename), destination_folder)
+
+if __name__ == "__main__":
+    target_directory = "/path/to/your/directory"
+    organize_files(target_directory)
+    print("Files have been organized.")
+import pandas as pd
+
+def clean_data(file_path):
+    df = pd.read_csv(file_path)
+    
+    # Remove duplicate rows
+    df.drop_duplicates(inplace=True)
+    
+    # Fill missing values with a specified value or strategy
+    df.fillna(method='ffill', inplace=True)
+    
+    # Save the cleaned data to a new CSV file
+    df.to_csv('cleaned_data.csv', index=False)
+    print("Data cleaned and saved to 'cleaned_data.csv'.")
+
+if __name__ == "__main__":
+    file_path = "your_data.csv"
+    clean_data(file_path)
+import os
+import time
+
+def delete_old_files(directory, days):
+    current_time = time.time()
+    cutoff_time = current_time - (days * 86400)
+
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+        if os.path.isfile(file_path):
+            file_creation_time = os.path.getctime(file_path)
+            if file_creation_time < cutoff_time:
+                os.remove(file_path)
+                print(f"Deleted {filename}")
+
+if __name__ == "__main__":
+    target_directory = "/path/to/your/directory"
+    days_old = 30  # Delete files older than 30 days
+    delete_old_files(target_directory, days_old)
